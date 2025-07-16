@@ -33,6 +33,8 @@ GameSprite::GameSprite(const sf::Vector2f pos)
     // Texture alèatoire
     texture_idx_ = texture_idx_dist_(gen_);
 
+    texture_ = std::make_unique<sf::Texture>(texture_manager::GetTexture(texture_idx_));
+    sprite_ = sf::Sprite(texture_manager::GetTexture(texture_idx_));
 }
 
 void GameSprite::Update(const float deltaTime) {
@@ -54,16 +56,11 @@ void GameSprite::Update(const float deltaTime) {
 void GameSprite::Draw(sf::RenderWindow& window) {
     if (!is_active_) return;
 
-    //const sf::Texture texture(std::format("_assets/splats/splat{:02d}.png", texture_idx_));
-    const sf::Texture texture(texture_manager::GetTexture(texture_idx_));
-
-    sf::Sprite sprite(texture);
-    sprite.setOrigin({static_cast<float>(texture.getSize().x) / 2.0f, static_cast<float>(texture.getSize().y) / 2.0f});
-    sprite.setColor(current_color_);
-    sprite.setScale({scale_, scale_});
-    sprite.setPosition(position_);
-    window.draw(sprite);
-
+    sprite_->setOrigin({static_cast<float>(texture_->getSize().x) / 2.0f, static_cast<float>(texture_->getSize().y) / 2.0f});
+    sprite_->setColor(current_color_);
+    sprite_->setScale({scale_, scale_});
+    sprite_->setPosition(position_);
+    window.draw(*sprite_);
 }
 
 bool GameSprite::is_active() const {

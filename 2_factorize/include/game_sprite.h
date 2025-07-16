@@ -18,6 +18,9 @@ class GameSprite {
     float scale_;
     int texture_idx_;
 
+    std::optional<sf::Sprite> sprite_;
+    std::unique_ptr<sf::Texture> texture_;
+
     // Générateur de nombres aléatoires
     std::random_device rd_;
     std::mt19937 gen_;

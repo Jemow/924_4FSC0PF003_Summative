@@ -36,7 +36,7 @@ namespace texture_manager
         return static_cast<int32_t>(textures_.size());
     }
 
-    sf::Texture GetTexture(const int index)
+    sf::Texture& GetTexture(const int index)
     {
         return textures_[index];
     }
