@@ -3,10 +3,12 @@
 #include <SFML/Graphics.hpp>
 #include "game.h"
 
+#include "game_texture_manager.h"
+
 Game::Game() : window_(sf::VideoMode({1200, 800}), "Jeu de Sprites SFML", sf::Style::Close),
-         sprite_manager_(window_.getSize()),
-         info_text_(font_),
-         instructions_text_(font_){
+               sprite_manager_(window_.getSize()),
+               info_text_(font_),
+               instructions_text_(font_){
 
     window_.setFramerateLimit(60);
 
@@ -14,6 +16,8 @@ Game::Game() : window_(sf::VideoMode({1200, 800}), "Jeu de Sprites SFML", sf::St
     if (!font_.openFromFile("_assets/fonts/arial.ttf")) {
         std::cout << "Police arial.ttf non trouvée, utilisation de la police par défaut" << std::endl;
     }
+
+    texture_manager::Load();
 
     std::cout << "=== JEU DE SPRITES SFML ===" << std::endl;
     std::cout << "Contrôles :" << std::endl;

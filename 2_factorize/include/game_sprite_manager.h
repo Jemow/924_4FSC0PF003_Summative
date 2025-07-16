@@ -10,7 +10,6 @@
 
 // Gestionnaire de sprites
 class GameSpriteManager {
-private:
     std::vector<std::unique_ptr<GameSprite>> sprites_;
     std::random_device rd_;
     std::mt19937 gen_;
