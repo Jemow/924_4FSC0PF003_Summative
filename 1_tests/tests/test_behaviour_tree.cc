@@ -107,18 +107,33 @@ TEST(BehaviourTree, selector_one_child) {
 }
 
 TEST(BehaviourTree, selector_multiple_children) {
-  bool check_conditions = false;
-  bool action_executed = false;
+  bool check_conditions1 = false;
+  bool check_conditions2 = false;
+  bool action_executed1 = false;
+  bool action_executed2 = false;
   Selector selector;
 
-  selector.Add(std::make_unique<Leaf>([&]{return simple_action(check_conditions, action_executed);}));
-  selector.Add(std::make_unique<Leaf>([&]{return simple_action(check_conditions, action_executed);}));
+  selector.Add(std::make_unique<Leaf>([&]{return simple_action(check_conditions1, action_executed1);}));
+  selector.Add(std::make_unique<Leaf>([&]{return simple_action(check_conditions2, action_executed2);}));
 
   EXPECT_EQ(selector.Tick(), Status::kFailure);
 
-  check_conditions = true;
+  check_conditions1 = true;
   EXPECT_EQ(selector.Tick(), Status::kRunning);
 
-  action_executed = true;
+  action_executed1 = true;
+  EXPECT_EQ(selector.Tick(), Status::kSuccess);
+
+  check_conditions2 = true;
+  action_executed1 = false;
+  EXPECT_EQ(selector.Tick(), Status::kRunning);
+
+  action_executed1 = true;
+  EXPECT_EQ(selector.Tick(), Status::kSuccess);
+
+  check_conditions1 = false;
+  EXPECT_EQ(selector.Tick(), Status::kRunning);
+
+  action_executed2 = true;
   EXPECT_EQ(selector.Tick(), Status::kSuccess);
 }
