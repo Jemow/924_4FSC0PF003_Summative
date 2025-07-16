@@ -7,12 +7,14 @@
 #include <random>
 #include <SFML/Graphics.hpp>
 
+#include "game_texture_manager.h"
+
 GameSprite::GameSprite(const sf::Vector2f pos)
     : position_(pos), alpha_(255.0f), is_active_(true) {
 
     gen_ = std::mt19937(rd_());
     color_dist_ = std::uniform_int_distribution<>(0, 255);
-    texture_idx_dist_ = std::uniform_int_distribution<>(0, 35);
+    texture_idx_dist_ = std::uniform_int_distribution<>(0, texture_manager::GetSize() - 1);
     fade_dist_ = std::uniform_real_distribution<float>(30.0, 80.0);
     scale_dist_ = std::uniform_real_distribution<float>(0.75, 1.5);
 
@@ -52,7 +54,8 @@ void GameSprite::Update(const float deltaTime) {
 void GameSprite::Draw(sf::RenderWindow& window) {
     if (!is_active_) return;
 
-    const sf::Texture texture(std::format("_assets/splats/splat{:02d}.png", texture_idx_));
+    //const sf::Texture texture(std::format("_assets/splats/splat{:02d}.png", texture_idx_));
+    const sf::Texture texture(texture_manager::GetTexture(texture_idx_));
 
     sf::Sprite sprite(texture);
     sprite.setOrigin({static_cast<float>(texture.getSize().x) / 2.0f, static_cast<float>(texture.getSize().y) / 2.0f});
