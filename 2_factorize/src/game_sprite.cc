@@ -56,11 +56,16 @@ void GameSprite::Update(const float deltaTime) {
 void GameSprite::Draw(sf::RenderWindow& window) {
     if (!is_active_) return;
 
+    ConfigureSprite();
+    window.draw(*sprite_);
+}
+
+void GameSprite::ConfigureSprite()
+{
     sprite_->setOrigin({static_cast<float>(texture_->getSize().x) / 2.0f, static_cast<float>(texture_->getSize().y) / 2.0f});
     sprite_->setColor(current_color_);
     sprite_->setScale({scale_, scale_});
     sprite_->setPosition(position_);
-    window.draw(*sprite_);
 }
 
 bool GameSprite::is_active() const {

@@ -9,6 +9,8 @@
 
 // Classe Sprite personnalisée
 class GameSprite {
+    void ConfigureSprite();
+
     sf::Vector2f position_;
     float alpha_;
     float fade_speed_;
