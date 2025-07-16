@@ -66,13 +66,52 @@ TEST(BehaviourTree, no_loop_one_child) {
 }
 
 TEST(BehaviourTree, no_loop_multiple_children) {
-  FAIL() << "Fill this test";
+  bool check_conditions = false;
+  bool action_executed = false;
+  NoLoop no_loop;
+
+  for (int i = 0; i < 3; i++)
+    no_loop.Add(std::make_unique<Leaf>([&]{return simple_action(check_conditions, action_executed);}));
+
+  EXPECT_EQ(no_loop.Tick(), Status::kFailure);
+
+  check_conditions = true;
+  EXPECT_EQ(no_loop.Tick(), Status::kRunning);
+
+  action_executed = true;
+  EXPECT_EQ(no_loop.Tick(), Status::kSuccess);
+  EXPECT_EQ(no_loop.Tick(), Status::kSuccess);
 }
 
 TEST(BehaviourTree, selector_one_child) {
-  FAIL() << "Fill this test";
+  bool check_conditions = false;
+  bool action_executed = false;
+  Selector selector;
+
+  selector.Add(std::make_unique<Leaf>([&]{return simple_action(check_conditions, action_executed);}));
+
+  EXPECT_EQ(selector.Tick(), Status::kFailure);
+
+  check_conditions = true;
+  EXPECT_EQ(selector.Tick(), Status::kRunning);
+
+  action_executed = true;
+  EXPECT_EQ(selector.Tick(), Status::kSuccess);
 }
 
 TEST(BehaviourTree, selector_multiple_children) {
-  FAIL() << "Fill this test";
+  bool check_conditions = false;
+  bool action_executed = false;
+  Selector selector;
+
+  for (int i = 0; i < 3; i++)
+    selector.Add(std::make_unique<Leaf>([&]{return simple_action(check_conditions, action_executed);}));
+
+  EXPECT_EQ(selector.Tick(), Status::kFailure);
+
+  check_conditions = true;
+  EXPECT_EQ(selector.Tick(), Status::kRunning);
+
+  action_executed = true;
+  EXPECT_EQ(selector.Tick(), Status::kSuccess);
 }
